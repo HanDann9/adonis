@@ -1,0 +1,27 @@
+<h1>
+    Register Admin
+</h1>
+
+<form action="{{ route('admin.register') }}" method="POST">
+    <label>
+        Username
+        <input type="text" name="name">
+    </label>
+
+    <label>
+        Email
+        <input type="email" name="email">
+    </label>
+
+    <label>
+        Roles
+        <input type="text" name="roles">
+    </label>
+
+    <label>
+        password
+        <input type="password" name="password">
+    </label>
+
+    <button type="submit">Register</button>
+</form>
