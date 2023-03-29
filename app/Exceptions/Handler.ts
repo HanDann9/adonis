@@ -32,7 +32,8 @@ export default class ExceptionHandler extends HttpExceptionHandler {
      * Self handle the validation exception
      */
     if (error.code === 'E_UNAUTHORIZED_ACCESS') {
-      return ctx.response.redirect('/login')
+      const redirectUrl = ctx.request.url(true).includes('admin') ? '/admin/login' : '/login'
+      return ctx.response.redirect(redirectUrl)
     }
 
     /**

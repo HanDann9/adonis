@@ -3,27 +3,27 @@ import User from 'App/Models/User'
 
 export default class AuthController {
   public async registerShow({ view }: HttpContextContract) {
-    return view.render('auth/register')
+    return view.render('user/auth/register')
   }
 
   public async register({ request, response, auth }: HttpContextContract) {
     const { email, password, name, roles } = request.all()
     const user = await User.create({ email, password, name, roles })
 
-    await auth.use('web').login(user)
+    await auth.use('user').login(user)
 
     return response.redirect('/')
   }
 
   public async loginShow({ view }: HttpContextContract) {
-    return view.render('auth/user/login')
+    return view.render('user/auth/login')
   }
 
   public async login({ request, response, auth, session }: HttpContextContract) {
     const { email, password } = request.all()
 
     try {
-      await auth.use('web').attempt(email, password)
+      await auth.use('user').attempt(email, password)
 
       return response.redirect('/')
     } catch (error) {
@@ -33,7 +33,7 @@ export default class AuthController {
   }
 
   public async logout({ response, auth }: HttpContextContract) {
-    await auth.use('web').logout()
+    await auth.use('user').logout()
 
     return response.redirect().toRoute('login.show')
   }

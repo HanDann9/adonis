@@ -20,6 +20,7 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
+/****************************** ADMIN ******************************/
 Route.group(() => {
   Route.get('register', 'AdminController.registerShow').as('admin.register.show')
   Route.post('register', 'AdminController.register').as('admin.register')
@@ -27,9 +28,10 @@ Route.group(() => {
   Route.post('login', 'AdminController.login').as('admin.login').middleware('guest')
   Route.get('logout', 'AdminController.logout').as('admin.logout')
 
-  Route.get('/', 'AdminController.show').middleware('auth')
+  Route.get('/', 'AdminController.show').middleware('auth').as('admin.show')
 }).prefix('admin')
 
+/****************************** USER ******************************/
 Route.group(() => {
   Route.get('register', 'UserController.registerShow').as('register.show')
   Route.post('register', 'UserController.register').as('register')

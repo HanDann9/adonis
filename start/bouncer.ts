@@ -6,7 +6,8 @@
  */
 
 import Bouncer from '@ioc:Adonis/Addons/Bouncer'
-import User from '../app/Models/User'
+import User from 'App/Models/User'
+import Admin from 'App/Models/Admin'
 /*
 |--------------------------------------------------------------------------
 | Bouncer Actions
@@ -30,14 +31,6 @@ import User from '../app/Models/User'
 |****************************************************************
 */
 export const { actions } = Bouncer
-  // Admin
-  .define('showAdmin', (user: User) => {
-    return user.roles === 'admin'
-  })
-  // User
-  .define('showUser', (user: User) => {
-    return user.roles === 'user'
-  })
 
 /*
 |--------------------------------------------------------------------------
@@ -62,4 +55,6 @@ export const { actions } = Bouncer
 | NOTE: Always export the "policies" const from this file
 |****************************************************************
 */
-export const { policies } = Bouncer.registerPolicies({})
+export const { policies } = Bouncer.registerPolicies({
+  CoursePolicy: () => import('App/Policies/CoursePolicy'),
+})

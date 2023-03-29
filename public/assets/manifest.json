@@ -1,0 +1,10 @@
+{
+  "assets/app.css": "http://localhost:8080/assets/app.css",
+  "assets/app.js": "http://localhost:8080/assets/app.js",
+  "assets/images/ui-icons_777777_256x240.png": "http://localhost:8080/assets/images/ui-icons_777777_256x240.476c8217.png",
+  "assets/images/ui-icons_444444_256x240.png": "http://localhost:8080/assets/images/ui-icons_444444_256x240.99be9870.png",
+  "assets/images/ui-icons_555555_256x240.png": "http://localhost:8080/assets/images/ui-icons_555555_256x240.e387e8f5.png",
+  "assets/images/ui-icons_ffffff_256x240.png": "http://localhost:8080/assets/images/ui-icons_ffffff_256x240.ebfed008.png",
+  "assets/images/ui-icons_777620_256x240.png": "http://localhost:8080/assets/images/ui-icons_777620_256x240.84228311.png",
+  "assets/images/ui-icons_cc0000_256x240.png": "http://localhost:8080/assets/images/ui-icons_cc0000_256x240.09c73deb.png"
+}
