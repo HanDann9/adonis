@@ -22,22 +22,30 @@ import Route from '@ioc:Adonis/Core/Route'
 
 /****************************** ADMIN ******************************/
 Route.group(() => {
-  Route.get('register', 'AdminController.registerShow').as('admin.register.show')
+  Route.get('register', 'AdminController.registerShow').as('admin.register.show').middleware('guest')
   Route.post('register', 'AdminController.register').as('admin.register')
   Route.get('login', 'AdminController.loginShow').as('admin.login.show').middleware('guest')
-  Route.post('login', 'AdminController.login').as('admin.login').middleware('guest')
+  Route.post('login', 'AdminController.login').as('admin.login')
   Route.get('logout', 'AdminController.logout').as('admin.logout')
-
-  Route.get('/', 'AdminController.show').middleware('auth').as('admin.show')
 }).prefix('admin')
 
 /****************************** USER ******************************/
 Route.group(() => {
-  Route.get('register', 'UserController.registerShow').as('register.show')
+  Route.get('register', 'UserController.registerShow').as('register.show').middleware('guest')
   Route.post('register', 'UserController.register').as('register')
   Route.get('login', 'UserController.loginShow').as('login.show').middleware('guest')
-  Route.post('login', 'UserController.login').as('login').middleware('guest')
+  Route.post('login', 'UserController.login').as('login')
   Route.get('logout', 'UserController.logout').as('logout')
-
-  Route.get('/', 'UserController.show').middleware('auth')
 })
+
+/****************************** Course ******************************/
+Route.get('/', 'CourseController.show').as('show').middleware('auth')
+Route.group(() => {
+  Route.get('/', 'CourseController.show').as('course.show').middleware('auth')
+  Route.get('create', 'CourseController.createShow').as('course.create.show').middleware('auth')
+  Route.post('create', 'CourseController.create').as('course.create').middleware('auth')
+  Route.get('isPublished', 'CourseController.isPublished').as('course.isPublished').middleware('auth')
+  Route.get('update/:id', 'CourseController.updateShow').middleware('auth:admin')
+  Route.post('update/:id', 'CourseController.update').middleware('auth:admin')
+  Route.get('delete/:id', 'CourseController.delete').middleware('auth:admin')
+}).prefix('course')

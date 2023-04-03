@@ -1,5 +1,6 @@
 const { join } = require('path')
 const Encore = require('@symfony/webpack-encore')
+const webpack = require('webpack')
 
 /*
 |--------------------------------------------------------------------------
@@ -45,7 +46,7 @@ Encore.setPublicPath('/assets')
 | entrypoints.
 |
 */
-Encore.addEntry('app', './resources/js/app.js')
+Encore.addEntry('app', './public/js/app.js')
 
 /*
 |--------------------------------------------------------------------------

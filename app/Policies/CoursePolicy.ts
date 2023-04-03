@@ -1,15 +1,24 @@
 import { BasePolicy } from '@ioc:Adonis/Addons/Bouncer'
-import User from 'App/Models/User'
 import Admin from 'App/Models/Admin'
 
 export default class CoursePolicy extends BasePolicy {
-  // Admin
-  public async adminView(admin: Admin) {
+  public async view(admin: Admin) {
     return admin.roles === 'root' || admin.roles === 'admin'
   }
 
-  // User
-  public async userView(user: User) {
-    return user.roles === 'user'
+  public async create(admin: Admin) {
+    return admin.roles === 'root' || admin.roles === 'user'
+  }
+
+  public async isPublished(admin: Admin) {
+    return admin.roles !== 'guest'
+  }
+
+  public async update(admin: Admin) {
+    return admin.roles === 'root'
+  }
+
+  public async delete(admin: Admin) {
+    return admin.roles === 'root'
   }
 }

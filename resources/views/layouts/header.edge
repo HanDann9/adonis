@@ -1,23 +1,20 @@
 <header>
   <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand"> Adonis </a>
+      <a class="navbar-brand" href="/"> Adonis </a>
       <form class="d-flex">
         @if (auth.isLoggedIn)
-        <a class="navbar-brand">{{ auth.defaultGuard ? auth.defaultGuard : 'user' }}</a>
-        <a class="btn btn-secondary" href=" {{ auth.defaultGuard ? route('admin.logout') : route('logout') }}">
-          Logout
-        </a>
+        <a class="navbar-brand">{{ auth.user.roles }}</a>
+        <a class="btn btn-secondary"
+          href=" {{ auth.defaultGuard === 'admin' ? route('admin.logout') : route('logout') }}"> Logout </a>
         @else
-        <a class="btn btn-secondary" id="login"> Login </a>
-        <a class="btn btn-secondary ms-2" id="register" href=" {{ route('admin.register.show') }}"> Register </a>
-        @end
+        <a class="btn btn-secondary"
+          href="{{ request.url().includes('/admin') ? route('admin.login.show') : route('login.show') }}"> Login </a>
+        <a class="btn btn-secondary ms-2"
+          href="{{ request.url().includes('/admin') ? route('admin.register.show') : route('register.show') }}">
+          Register </a>
+        @endif
       </form>
     </div>
   </nav>
 </header>
-
-<script>
-  $("#login").attr('href', '{{ route('admin.login.show') }}');
-  // console.log($('#login').val());
-</script>

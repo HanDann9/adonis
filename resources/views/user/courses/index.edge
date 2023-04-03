@@ -3,42 +3,80 @@
 
 @section('body')
 <section ">
-  @if (auth.user)
-    <a href=" {{ route('logout') }}">Logout</a>
-  @endif
-
-  <h1> {{ roles }} </h1>
-
-  <p class="subtitle"> Subtitle </p>
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class=" d-flex align-items-center m-2">
+  <h3 class="mb-0 me-2">Courses</h3>
+  @can('CoursePolicy.create')
+  <a href="{{ route('course.create.show') }}" class="btn btn-primary">Create course</a>
+  @end
+  </div>
+  <div class="ms-2 card border-dark" style="max-width: 80rem;">
+    <div class="card-body">
+      <div class=" table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody class="border-top-0">
+            @each(course in courses)
+            <tr>
+              <td>{{ course.name }}</td>
+              <td>{{ course.description }}</td>
+              <td>
+                <button type="button"
+                  class="btn-is-published btn btn-sm {{ course.status === 0 ? 'btn-secondary' : 'btn-success' }}"
+                  data-url="/course/isPublished" data-id="{{ course.id }}" data-status="{{ course.status }}"
+                  {{auth.user.roles==='guest' ? 'disabled' : '' }}>
+                  {{ course.status === 0 ? 'Disable' : 'Published' }}
+                </button>
+              </td>
+            </tr>
+            @end
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </section>
+
+<script>
+  $('.btn-is-published').on('click', function (e) {
+    const url = $(this).attr('data-url')
+    const id = $(this).attr('data-id')
+    const status = $(this).attr('data-status')
+
+    $.ajax({
+      url: url,
+      type: 'GET',
+      dataType: 'json',
+      data: { id, status },
+      success: async (result) => {
+        await Swal.fire({
+          title: result.title,
+          text: result.message,
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1500,
+        })
+        location.reload()
+      },
+      error: async (error) => {
+        if (error.status === 500) {
+          Swal.fire({
+            title: error.responseJSON.title,
+            text: error.responseJSON.message,
+            icon: 'error',
+            showConfirmButton: false,
+            timer: 1500,
+          })
+        } else {
+          console.log(error)
+        }
+      },
+    })
+  })
+</script>
 @end

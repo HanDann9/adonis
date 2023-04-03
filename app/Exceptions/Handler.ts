@@ -36,6 +36,10 @@ export default class ExceptionHandler extends HttpExceptionHandler {
       return ctx.response.redirect(redirectUrl)
     }
 
+    if (error.code === 'E_AUTHORIZATION_FAILURE') {
+      return ctx.response.status(500).send('You are not authorized to perform this action')
+    }
+
     /**
      * Forward rest of the exceptions to the parent class
      */

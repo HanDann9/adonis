@@ -24,7 +24,6 @@ export default class AuthController {
 
     try {
       await auth.use('user').attempt(email, password)
-
       return response.redirect('/')
     } catch (error) {
       session.flash('form', 'Your email or password is incorrect')
@@ -34,11 +33,6 @@ export default class AuthController {
 
   public async logout({ response, auth }: HttpContextContract) {
     await auth.use('user').logout()
-
     return response.redirect().toRoute('login.show')
-  }
-
-  public async show({ view, auth }: HttpContextContract) {
-    return view.render('pages/user/index', { roles: auth.user?.roles })
   }
 }
