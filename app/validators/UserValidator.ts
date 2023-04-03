@@ -1,13 +1,27 @@
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
-import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Validator from 'App/validators/validator'
 
-export class create {
-  constructor(protected ctx: HttpContextContract) {}
-
-  public schema = schema.create({
-    name: schema.string({ trim: true }),
-    email: schema.string({ trim: true }, [rules.email(), rules.unique({ table: 'users', column: 'email' })]),
-    roles: schema.string(),
-    password: schema.string({ trim: true }),
-  })
+class UserValidator extends Validator {
+  protected schemas(type: string) {
+    switch (type) {
+      case 'create':
+        return schema.create({
+          name: schema.string({ trim: true }),
+          email: schema.string({ trim: true }, [rules.email(), rules.unique({ table: 'admins', column: 'email' })]),
+          roles: schema.string(),
+          password: schema.string({ trim: true }),
+        })
+      case 'update':
+        return schema.create({
+          name: schema.string({ trim: true }),
+          email: schema.string({ trim: true }, [rules.email(), rules.unique({ table: 'admins', column: 'email' })]),
+          roles: schema.string(),
+          password: schema.string({ trim: true }),
+        })
+      default:
+        return schema.create({})
+    }
+  }
 }
+
+export default new UserValidator()

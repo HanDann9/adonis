@@ -6,7 +6,6 @@ import Database from '@ioc:Adonis/Lucid/Database'
 export default class CourseController {
   public async show({ view, auth }: HttpContextContract) {
     const courses = await Database.from('courses')
-
     if (auth.defaultGuard === 'admin') {
       return view.render('admin/courses/index', { roles: auth.user?.roles, courses })
     } else {
@@ -16,7 +15,6 @@ export default class CourseController {
 
   public async createShow({ view, auth, bouncer }: HttpContextContract) {
     await bouncer.with('CoursePolicy').authorize('create')
-
     if (auth.defaultGuard === 'admin') {
       return view.render('admin/courses/add')
     } else {
@@ -51,9 +49,7 @@ export default class CourseController {
 
   public async updateShow({ view, params, bouncer }: HttpContextContract) {
     await bouncer.with('CoursePolicy').authorize('update')
-
     const data = await Course.find(params.id)
-
     return view.render('admin/courses/update', { data })
   }
 
@@ -74,13 +70,9 @@ export default class CourseController {
 
   public async delete({ response, params, bouncer, session }: HttpContextContract) {
     await bouncer.with('CoursePolicy').authorize('delete')
-
     const course = await Course.findOrFail(params.id)
-
     await course.delete()
-
     session.flash({ notification: 'Course has been deleted' })
-
     return response.redirect().toRoute('course.show')
   }
 }

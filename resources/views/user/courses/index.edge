@@ -48,34 +48,46 @@
     const id = $(this).attr('data-id')
     const status = $(this).attr('data-status')
 
-    $.ajax({
-      url: url,
-      type: 'GET',
-      dataType: 'json',
-      data: { id, status },
-      success: async (result) => {
-        await Swal.fire({
-          title: result.title,
-          text: result.message,
-          icon: 'success',
-          showConfirmButton: false,
-          timer: 1500,
+    Swal.fire({
+      title: `Do you want to ${status == 0 ? 'publish' : 'disable'}?`,
+      text: `Do you want to ${status == 0 ? 'publish' : 'disable'}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'OK',
+      cancelButtonText: 'Cancel',
+      allowOutsideClick: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: url,
+          type: 'GET',
+          dataType: 'json',
+          data: { id, status },
+          success: async (result) => {
+            await Swal.fire({
+              title: result.title,
+              text: result.message,
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500,
+            })
+            location.reload()
+          },
+          error: async (error) => {
+            if (error.status === 500) {
+              Swal.fire({
+                title: error.responseJSON.title,
+                text: error.responseJSON.message,
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 1500,
+              })
+            } else {
+              console.log(error)
+            }
+          },
         })
-        location.reload()
-      },
-      error: async (error) => {
-        if (error.status === 500) {
-          Swal.fire({
-            title: error.responseJSON.title,
-            text: error.responseJSON.message,
-            icon: 'error',
-            showConfirmButton: false,
-            timer: 1500,
-          })
-        } else {
-          console.log(error)
-        }
-      },
+      }
     })
   })
 </script>

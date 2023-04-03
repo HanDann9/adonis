@@ -1,8 +1,8 @@
-import '../css/bootstrap.min.css'
-
-import './bootstrap.bundle.min.js'
-import $ from './jquery-3.6.4.min.js'
-import Swal from './sweetalert2.all.min.js'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap'
+import 'jquery-ui'
+import $ from 'jquery'
+import Swal from 'sweetalert2'
 
 window.$ = window.jQuery = $
 window.Swal = Swal
