@@ -9,7 +9,9 @@ export default class AuthController {
   public async register({ request, response, auth }: HttpContextContract) {
     const payload = await UserValidator.validate(request.all(), 'create')
     const user = await User.create(payload)
+
     await auth.use('user').login(user)
+
     return response.redirect('/')
   }
 
@@ -19,6 +21,7 @@ export default class AuthController {
 
   public async login({ request, response, auth, session }: HttpContextContract) {
     const { email, password } = request.all()
+
     try {
       await auth.use('user').attempt(email, password)
       return response.redirect('/')
@@ -30,6 +33,7 @@ export default class AuthController {
 
   public async logout({ response, auth }: HttpContextContract) {
     await auth.use('user').logout()
+
     return response.redirect().toRoute('login.show')
   }
 }

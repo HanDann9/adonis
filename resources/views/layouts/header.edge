@@ -2,19 +2,21 @@
   <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="/"> Adonis </a>
-      <form class="d-flex">
+      <div class="d-flex">
         @if (auth.isLoggedIn)
         <a class="navbar-brand">{{ auth.user.roles }}</a>
         <a class="btn btn-secondary"
           href=" {{ auth.defaultGuard === 'admin' ? route('admin.logout') : route('logout') }}"> Logout </a>
         @else
+        <a class="navbar-brand" href="/admin/login"> Admin </a>
+        <a class="navbar-brand" href="/"> User </a>
         <a class="btn btn-secondary"
           href="{{ request.url().includes('/admin') ? route('admin.login.show') : route('login.show') }}"> Login </a>
         <a class="btn btn-secondary ms-2"
           href="{{ request.url().includes('/admin') ? route('admin.register.show') : route('register.show') }}">
           Register </a>
         @endif
-      </form>
+      </div>
     </div>
   </nav>
 </header>
