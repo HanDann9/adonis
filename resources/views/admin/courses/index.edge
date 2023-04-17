@@ -9,6 +9,7 @@
   <a href="{{ route('course.create.show') }}" class="btn btn-primary">Create course</a>
   @end
   </div>
+
   <div class="ms-2 card border-dark" style="max-width: 80rem;">
     <div class="card-body">
       <div class=" table-responsive">
@@ -39,6 +40,13 @@
               <td>
                 <a type="button" class="btn btn-primary btn-sm" href="/course/update/{{ course.id }}">Edit</a>
                 <a type="button" class="btn btn-danger btn-sm" href="/course/delete/{{ course.id }}">Delete</a>
+              </td>
+              @end
+              @if(users.length > 0)
+              <td>
+                <a type="button" class="btn btn-danger btn-sm" href="/user/delete/{{ users[0].id }}">
+                  {{users[0].email }}
+                </a>
               </td>
               @end
             </tr>

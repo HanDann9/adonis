@@ -36,6 +36,7 @@ Route.group(() => {
   Route.get('login', 'UserController.loginShow').as('login.show').middleware('guest')
   Route.post('login', 'UserController.login').as('login')
   Route.get('logout', 'UserController.logout').as('logout')
+  Route.get('user/delete/:id', 'UserController.delete').as('user.delete')
 })
 
 /****************************** Course ******************************/

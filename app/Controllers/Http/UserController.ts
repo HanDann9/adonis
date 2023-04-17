@@ -31,6 +31,16 @@ export default class AuthController {
     }
   }
 
+  public async delete({ response, params, session }: HttpContextContract) {
+    const user = await User.findOrFail(params.id)
+
+    await user.delete()
+
+    session.flash({ notification: 'User has been deleted' })
+
+    return response.redirect().toRoute('course.show')
+  }
+
   public async logout({ response, auth }: HttpContextContract) {
     await auth.use('user').logout()
 

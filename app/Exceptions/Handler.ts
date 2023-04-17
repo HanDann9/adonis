@@ -33,9 +33,11 @@ export default class ExceptionHandler extends HttpExceptionHandler {
      */
     switch (error.code) {
       case 'E_UNAUTHORIZED_ACCESS':
+        Logger.warn('You are not authorized to perform this action')
         const redirectUrl = ctx.request.url(true).includes('admin') ? '/admin/login' : '/login'
         return ctx.response.redirect(redirectUrl)
       case 'E_AUTHORIZATION_FAILURE':
+        Logger.warn('You are not authorized to perform this action')
         return ctx.response.status(500).send('You are not authorized to perform this action')
       default:
         break

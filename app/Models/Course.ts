@@ -1,9 +1,16 @@
+import { compose } from '@ioc:Adonis/Core/Helpers'
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, ModelQueryBuilderContract, beforeFetch, column } from '@ioc:Adonis/Lucid/Orm'
+import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 
-export default class Course extends BaseModel {
+type CourseQuery = ModelQueryBuilderContract<typeof Course>
+
+export default class Course extends compose(BaseModel, SoftDeletes) {
   @column({ isPrimary: true })
   public id: number
+
+  @column()
+  public user_id: number
 
   @column()
   public name: string
@@ -19,4 +26,12 @@ export default class Course extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @column.dateTime()
+  public deletedAt: DateTime | null
+
+  @beforeFetch()
+  public static withoutSoftDeletes(query: CourseQuery) {
+    query.whereNull('deleted_at')
+  }
 }

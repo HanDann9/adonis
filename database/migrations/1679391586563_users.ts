@@ -12,6 +12,7 @@ export default class UsersSchema extends BaseSchema {
       table.string('roles', 10).notNullable()
       table.string('remember_me_token').nullable()
       table.timestamps(true)
+      table.timestamp('deleted_at', { useTz: true }).nullable()
     })
   }
 

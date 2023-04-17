@@ -1,8 +1,10 @@
+import { compose } from '@ioc:Adonis/Core/Helpers'
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { column, beforeSave, BaseModel } from '@ioc:Adonis/Lucid/Orm'
+import { SoftDeletes } from '@ioc:Adonis/Addons/LucidSoftDeletes'
 
-export default class Admin extends BaseModel {
+export default class Admin extends compose(BaseModel, SoftDeletes) {
   @column({ isPrimary: true })
   public id: number
 
@@ -26,6 +28,9 @@ export default class Admin extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @column.dateTime()
+  public deletedAt: DateTime | null
 
   @beforeSave()
   public static async hashPassword(admin: Admin) {

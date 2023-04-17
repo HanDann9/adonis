@@ -1,16 +1,17 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import CourseValidator from 'App/validators/CourseValidator'
 import Course from 'App/Models/Course'
-import Database from '@ioc:Adonis/Lucid/Database'
+import User from 'App/Models/User'
 
 export default class CourseController {
   public async show({ view, auth }: HttpContextContract) {
-    const courses = await Database.from('courses')
+    const courses = await Course.all()
+    const users = await User.all()
 
     if (auth.defaultGuard === 'admin') {
-      return view.render('admin/courses/index', { roles: auth.user?.roles, courses })
+      return view.render('admin/courses/index', { roles: auth.user?.roles, courses, users })
     } else {
-      return view.render('user/courses/index', { roles: auth.user?.roles, courses })
+      return view.render('user/courses/index', { roles: auth.user?.roles, courses, users })
     }
   }
 
@@ -24,12 +25,12 @@ export default class CourseController {
     }
   }
 
-  public async create({ request, response, bouncer, session }: HttpContextContract) {
+  public async create({ request, response, bouncer, session, auth }: HttpContextContract) {
     await bouncer.with('CoursePolicy').authorize('create')
 
     const payload = await CourseValidator.validate(request.all(), 'create')
 
-    await Course.create({ ...payload, status: 0 })
+    await Course.create({ ...payload, status: 0, user_id: auth.user?.id })
 
     session.flash({ notification: 'Course has been created' })
 
@@ -63,7 +64,7 @@ export default class CourseController {
     const payload = await CourseValidator.validate(request.all(), 'update')
     const course = await Course.findOrFail(params.id)
 
-    course.merge(payload).save()
+    await course.merge(payload).save()
 
     session.flash({ notification: 'Course has been updated' })
 
